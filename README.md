@@ -7,7 +7,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[TesloShop-NestJS](https://github.com/ElisPerez/teslo-shop-nestjs) framework TypeScript starter repository.
 
 ## Installation
 
