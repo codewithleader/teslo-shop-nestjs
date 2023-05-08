@@ -3,6 +3,9 @@
 .env.prod
 .env.dev
 
+# PostgreSQL DB
+postgres/
+
 # compiled output
 /dist
 /node_modules

@@ -2,20 +2,26 @@
   <a href="https://github.com/ElisPerez/teslo-shop-nestjs" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Teslo API with NestJS
 
-## Description
+# Pasos:
 
-[TesloShop-NestJS](https://github.com/ElisPerez/teslo-shop-nestjs) framework TypeScript starter repository.
-
-## Installation
+1. Installation
 
 ```bash
 $ yarn install
 ```
 
-## Running the app
+2. Configurar variables de entorno.
+   - Clonar el archivo `.env.template` y renombrarlo a `.env`
+
+3. Levantar DB PostgreSQL con docker-compose
+
+```
+docker-compose up -d
+```
+
+4. Running the app
 
 ```bash
 # watch mode
