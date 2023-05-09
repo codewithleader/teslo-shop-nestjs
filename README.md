@@ -30,3 +30,6 @@ $ yarn start:dev
 # production mode
 $ yarn start:prod
 ```
+
+# DTO: Data Transfer Object
+  - Es una `class` que nos dice como luce nuestra data (tipo interface) pero con el plus de que podemos agregarle todas las validaciones a cada propiedad que tenga la clase.
