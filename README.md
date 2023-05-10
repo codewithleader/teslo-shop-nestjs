@@ -31,5 +31,12 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
+# Modulos
+  - Agrupan y desacoplan la funcionalidad de un dominio determinado.
+
+# Servicios
+  - Todos los servicios son Providers pero no todos los Providers son Servicios.
+  - Alojan la lógica de negocio de tal manera que sea reutilizable mediante inyección de dependencias.
+
 # DTO: Data Transfer Object
   - Es una `class` que nos dice como luce nuestra data (tipo interface) pero con el plus de que podemos agregarle todas las validaciones a cada propiedad que tenga la clase.
