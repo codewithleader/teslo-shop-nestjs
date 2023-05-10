@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -21,18 +22,6 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
     try {
-      // if (!createProductDto.slug) {
-      //   createProductDto.slug = createProductDto.title
-      //     .toLowerCase()
-      //     .replaceAll(' ', '_')
-      //     .replaceAll("'", '');
-      // } else {
-      //   createProductDto.slug = createProductDto.slug
-      //     .toLowerCase()
-      //     .replaceAll(' ', '_')
-      //     .replaceAll("'", '');
-      // }
-
       const product = this.productRepository.create(createProductDto); // Crea la instancia
       await this.productRepository.save(product); // Guarda el product en DB
 
@@ -42,20 +31,31 @@ export class ProductsService {
     }
   }
 
+  // todo: paginación
   findAll() {
-    return `This action returns all products`;
+    return this.productRepository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    const product = await this.productRepository.findOneBy({ id }); // Solo acepta string 🤷🏻‍♀️
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID: ${id} Not Found`);
+    }
+
+    return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
+  update(id: string, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: string) {
+    const product = await this.findOne(id);
+
+    // No hay que comprobar si existe porque ya el método findOne ya lanza una exception si no existe
+
+    await this.productRepository.remove(product);
   }
 
   private handleDBExceptions(error: any) {
