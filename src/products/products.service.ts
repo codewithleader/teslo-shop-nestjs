@@ -5,11 +5,14 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+// Entity
+import { Product } from './entities/product.entity';
+// Data Transfer Object (DTO's)
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class ProductsService {
@@ -32,8 +35,13 @@ export class ProductsService {
   }
 
   // todo: paginación
-  findAll() {
-    return this.productRepository.find({});
+  findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
+    return this.productRepository.find({
+      take: limit,
+      skip: offset,
+      // todo: relaciones
+    });
   }
 
   async findOne(id: string) {
