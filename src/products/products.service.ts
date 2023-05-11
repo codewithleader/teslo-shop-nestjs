@@ -52,7 +52,15 @@ export class ProductsService {
     if (isUUID(term)) {
       product = await this.productRepository.findOneBy({ id: term });
     } else {
-      product = await this.productRepository.findOneBy({ slug: term });
+      const queryBuilder = this.productRepository.createQueryBuilder();
+      // SELECT * FROM products WHERE slug='abc' or title='abc'
+      product = await queryBuilder
+        .where('UPPER(title) =:title or slug =:slug', {
+          title: term.toUpperCase(), // Con el UPPER(title) convertimos a mayúscula el titulo en db para luego compararlo con el termino.toUpperCase y asi si el termino viene en minusculas o en mayúsculas simpre estará en mayúsculas al momento de hacer la comparación en la busqueda.
+          slug: term.toLowerCase(),
+        })
+        .getOne(); // "getOne" solo devulve un solo product si el where llega a devolver varios
+      // El where puede conseguir varios en el caso que tanto el title como el slug den positivo en la busqueda
     }
 
     if (!product) {
@@ -64,8 +72,23 @@ export class ProductsService {
     return product;
   }
 
-  update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    const product = await this.productRepository.preload({
+      id: id, // Buscate un producto con este id
+      ...updateProductDto, // y lo preparas para actualizar estos campos
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Produt with id: ${id} not found`);
+    }
+
+    try {
+      await this.productRepository.save(product);
+
+      return product;
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
   }
 
   async remove(id: string) {
