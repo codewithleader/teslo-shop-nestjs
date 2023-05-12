@@ -40,3 +40,9 @@ $ yarn start:prod
 
 # DTO: Data Transfer Object
   - Es una `class` que nos dice como luce nuestra data (tipo interface) pero con el plus de que podemos agregarle todas las validaciones a cada propiedad que tenga la clase.
+
+
+# TypeORM
+  - ORM: Object–Relational Mapping (ORM, O/RM, and O/R mapping tool) in computer science is a programming technique for converting data between a relational database and the heap of an object-oriented programming language. This creates, in effect, a virtual object database that can be used from within the programming language.
+  - TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). Its goal is to always support the latest JavaScript features and provide additional features that help you to develop any kind of application that uses databases - from small applications with a few tables to large scale enterprise applications with multiple databases.
+  - Link: [https://typeorm.io/](https://typeorm.io/)
