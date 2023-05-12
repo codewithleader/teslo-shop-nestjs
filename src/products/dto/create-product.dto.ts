@@ -34,10 +34,15 @@ export class CreateProductDto {
   @IsOptional()
   stock?: number;
 
-  @IsString({ each: true })
+  @IsString({ each: true }) // cada valor del array debe ser un string
   @IsArray()
   sizes: string[];
 
   @IsIn(['men', 'women', 'kid', 'unisex'])
   gender: string;
+
+  @IsString({ each: true }) // cada valor del array debe ser un string
+  @IsArray()
+  @IsOptional()
+  tags: string[];
 }

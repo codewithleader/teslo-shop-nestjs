@@ -38,9 +38,11 @@ $ yarn start:prod
   - Todos los servicios son Providers pero no todos los Providers son Servicios.
   - Alojan la lógica de negocio de tal manera que sea reutilizable mediante inyección de dependencias.
 
-# DTO: Data Transfer Object
-  - Es una `class` que nos dice como luce nuestra data (tipo interface) pero con el plus de que podemos agregarle todas las validaciones a cada propiedad que tenga la clase.
+# Entity
+  - Es el model, schema o como luce nuestra data en la DB. En ella especificamos las propiedades de un objeto en una DB.
 
+# DTO: Data Transfer Object
+  - Es una `class` que nos dice como debe lucir la data recibida en la creación o actualización de una `Entity`. Es como una interface pero con el plus de que podemos agregarle todas las validaciones a cada propiedad que tenga la clase.
 
 # TypeORM
   - ORM: Object–Relational Mapping (ORM, O/RM, and O/R mapping tool) in computer science is a programming technique for converting data between a relational database and the heap of an object-oriented programming language. This creates, in effect, a virtual object database that can be used from within the programming language.
