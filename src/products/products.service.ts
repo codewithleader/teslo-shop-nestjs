@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-// Entity
-import { Product } from './entities/product.entity';
+// Entities
+import { Product, ProductImage } from './entities';
 // Data Transfer Object (DTO's)
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -23,27 +23,46 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product) // Introducimos la entidad "Product"
     private readonly productRepository: Repository<Product>,
+
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
     try {
-      const product = this.productRepository.create(createProductDto); // Crea la instancia
+      const { images = [], ...productDetails } = createProductDto;
+
+      const product = this.productRepository.create({
+        ...productDetails,
+        images: images.map((image) =>
+          this.productImageRepository.create({ url: image }),
+        ),
+      });
+
       await this.productRepository.save(product); // Guarda el product en DB
 
-      return product;
+      return { ...product, images };
     } catch (error) {
       this.handleDBExceptions(error);
     }
   }
 
   // todo: paginación
-  findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto;
-    return this.productRepository.find({
+    const products = await this.productRepository.find({
       take: limit,
       skip: offset,
-      // todo: relaciones
+      relations: {
+        images: true,
+      },
     });
+
+    // Aplanamos las images para que enviar toda la info sinó solo la url:
+    return products.map((product) => ({
+      ...product,
+      images: product.images.map((img) => img.url),
+    }));
   }
 
   async findOne(term: string) {
@@ -52,13 +71,14 @@ export class ProductsService {
     if (isUUID(term)) {
       product = await this.productRepository.findOneBy({ id: term });
     } else {
-      const queryBuilder = this.productRepository.createQueryBuilder();
+      const queryBuilder = this.productRepository.createQueryBuilder('prod');
       // SELECT * FROM products WHERE slug='abc' or title='abc'
       product = await queryBuilder
         .where('UPPER(title) =:title or slug =:slug', {
           title: term.toUpperCase(), // Con el UPPER(title) convertimos a mayúscula el titulo en db para luego compararlo con el termino.toUpperCase y asi si el termino viene en minusculas o en mayúsculas simpre estará en mayúsculas al momento de hacer la comparación en la busqueda.
           slug: term.toLowerCase(),
         })
+        .leftJoinAndSelect('prod.images', 'prodImages')
         .getOne(); // "getOne" solo devulve un solo product si el where llega a devolver varios
       // El where puede conseguir varios en el caso que tanto el title como el slug den positivo en la busqueda
     }
@@ -72,10 +92,21 @@ export class ProductsService {
     return product;
   }
 
+  // Metodo para aplanar las images para no enviar toda la info sinó solo la url
+  async findOnePlain(term: string) {
+    const { images = [], ...rest } = await this.findOne(term);
+
+    return {
+      ...rest,
+      images: images.map((img) => img.url),
+    };
+  }
+
   async update(id: string, updateProductDto: UpdateProductDto) {
     const product = await this.productRepository.preload({
       id: id, // Buscate un producto con este id
       ...updateProductDto, // y lo preparas para actualizar estos campos
+      images: [],
     });
 
     if (!product) {
