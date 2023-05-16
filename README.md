@@ -42,6 +42,7 @@ $ yarn start:prod
   - Es el model, schema o como luce nuestra data en la DB. En ella especificamos las propiedades de un objeto en una DB.
 
 # DTO: Data Transfer Object
+  - La data del argumento del controller debe lucir de cierta forma, y los DTOs nos ayudan no solo a indicar que tipo de propiedad deben tener sinó con las validaciones correspondientes.
   - Es una `class` que nos dice como debe lucir la data recibida en la creación o actualización de una `Entity`. Es como una interface pero con el plus de que podemos agregarle todas las validaciones a cada propiedad que tenga la clase.
 
 # TypeORM
