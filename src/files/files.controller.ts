@@ -1,13 +1,21 @@
+// Express
+import { Response } from 'express';
+// NestJS
 import {
   BadRequestException,
   Controller,
+  Get,
+  Param,
   Post,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+// Services
+import { FilesService } from './files.service';
 import { diskStorage } from 'multer';
+// helpers
 import { fileFilter, fileNamer } from './helpers';
 
 @Controller('files') // Acá se le da el nombre al endpoint (http://localhost/api/files)
@@ -29,8 +37,19 @@ export class FilesController {
     if (!file)
       throw new BadRequestException('Make sure that the file is an image');
 
-    console.log({ file });
+    const secureUrl = `${file.filename}`;
 
-    return file.originalname;
+    return { secureUrl };
+  }
+
+  @Get('product/:imageName')
+  findProductImage(
+    //
+    @Res() res: Response, // Permite persolanizar la response
+    @Param('imageName') imageName: string,
+  ) {
+    const path = this.filesService.getStaticProductImage(imageName);
+
+    res.sendFile(path);
   }
 }
