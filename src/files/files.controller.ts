@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 // Services
 import { FilesService } from './files.service';
@@ -20,7 +21,12 @@ import { fileFilter, fileNamer } from './helpers';
 
 @Controller('files') // Acá se le da el nombre al endpoint (http://localhost/api/files)
 export class FilesController {
-  constructor(private readonly filesService: FilesService) {}
+  constructor(
+    //
+    private readonly filesService: FilesService,
+    // Para las Environment variables
+    private readonly configService: ConfigService,
+  ) {}
 
   @Post('product') // Acá se le agrega un nombre adicional al endpoint (http://localhost/api/files/product)
   @UseInterceptors(
@@ -37,7 +43,9 @@ export class FilesController {
     if (!file)
       throw new BadRequestException('Make sure that the file is an image');
 
-    const secureUrl = `${file.filename}`;
+    const secureUrl = `${this.configService.get('HOST_API')}/files/product/${
+      file.filename
+    }`;
 
     return { secureUrl };
   }
