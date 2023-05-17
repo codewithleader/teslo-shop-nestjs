@@ -151,7 +151,7 @@ export class ProductsService {
 
     // No hay que comprobar si existe porque ya el método findOne ya lanza una exception si no existe
 
-    await this.productRepository.remove(product);
+    await this.productRepository.remove(product); // onDelete: En product-image.entity.ts se agregó la propiedad onDelete: 'CASCADE' para eliminar la imagenes relacionadas al product.
   }
 
   private handleDBExceptions(error: any) {
@@ -162,5 +162,15 @@ export class ProductsService {
     throw new InternalServerErrorException(
       'Unexpected error, check server logs',
     );
+  }
+
+  async deleteAllProducts() {
+    const query = this.productRepository.createQueryBuilder('product');
+
+    try {
+      return await query.delete().where({}).execute();
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
   }
 }
