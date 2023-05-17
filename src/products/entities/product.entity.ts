@@ -9,7 +9,7 @@ import {
 // Entities (models)
 import { ProductImage } from './';
 
-@Entity()
+@Entity({ name: 'products' }) // con "name" Renombra columna de tabla en PostgreSQL
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
