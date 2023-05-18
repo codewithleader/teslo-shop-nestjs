@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "TesloDB",
+      "database": "TesloDB",
+      "username": "postgres",
+      "password": "39775e960550678d5241519a8a47f3fb"
+    }
+  ]
+}
