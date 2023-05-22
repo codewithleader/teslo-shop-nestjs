@@ -22,14 +22,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
   // Si el token no ha expirado y es un JWT válido se ejecutará nuestro metodo personalizado "validate" para Validar si el usuario está activo o no en mi base de datos
   async validate(payload: IJwtPayload): Promise<User> {
-    const { email } = payload;
+    const { id } = payload;
 
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this.userRepository.findOneBy({ id });
 
     if (!user) throw new UnauthorizedException('Token not valid');
 
     if (!user.isActive)
       throw new UnauthorizedException('User is inactive, talk with an admin');
+
+    // console.log(user);
 
     return user; // al retornar el user es añadido a la Request y puede ser usada en cualquier parte que se necesite (Request.user)
   }

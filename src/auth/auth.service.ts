@@ -39,7 +39,7 @@ export class AuthService {
 
       return {
         ...user,
-        token: this.getJwtToken({ email: user.email }),
+        token: this.getJwtToken({ id: user.id }),
       };
     } catch (error) {
       this.handleDBErrors(error);
@@ -52,7 +52,7 @@ export class AuthService {
     // En el User Entity el password configuramos para que por defecto no se muestre en las consultas (find, findOne, findOneBy), pero aquí sí necesitamos el password para hacer la verificación del password. Con el "select" indicamos cuales son los campos que nos interesa que regrese la consulta y ahí especificamos el password.
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { email: true, password: true },
+      select: { email: true, password: true, id: true },
     });
 
     if (!user) throw new UnauthorizedException('Credentials not valid (email)');
@@ -62,7 +62,7 @@ export class AuthService {
 
     return {
       ...user,
-      token: this.getJwtToken({ email: user.email }),
+      token: this.getJwtToken({ id: user.id }),
     };
   }
 
