@@ -15,6 +15,7 @@ $ yarn install
 2. Configurar variables de entorno.
 
    - Clonar el archivo `.env.template`, renombrarlo a `.env` y llenar la información requerida
+   - Para generar JWT_SECRET o DB_PASSWORD ir a la página: [https://generate-secret.vercel.app/32](https://generate-secret.vercel.app/32)
 
 3. Levantar DB PostgreSQL con docker-compose
 
