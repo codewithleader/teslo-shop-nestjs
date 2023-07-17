@@ -5,7 +5,7 @@ import {
   Get,
   UseGuards,
   Headers,
-  SetMetadata,
+  // SetMetadata, // Se reemplazó por customDecorator RoleProtected
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 //
@@ -15,29 +15,34 @@ import { AuthService } from './auth.service';
 import { GetUser, RawHeaders } from './decorators';
 import { IncomingHttpHeaders } from 'http';
 import { UserRoleGuard } from './guards/user-role/user-role.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // Decoradores
+  // Ruta
   @Post('register')
-  // Nombre de la función a continuación:
+  // Otros Decoradores
+  // Nombre del metodo:
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 
-  // Decoradores
+  // Ruta
   @Post('login')
-  // Nombre de la función a continuación:
+  // Otros Decoradores
+  // Nombre del metodo:
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
 
-  // Decoradores
+  // Ruta
   @Get('private')
+  // Otros Decoradores
   @UseGuards(AuthGuard())
-  // Nombre de la función a continuación:
+  // Nombre del metodo:
   testingPrivateRoute(
     @GetUser() user: User,
     @GetUser('email') userEmail: string,
@@ -55,11 +60,13 @@ export class AuthController {
     };
   }
 
-  // Decoradores
+  // Ruta
   @Get('private2')
-  @SetMetadata('roles', ['admin', 'super-user'])
+  // Otros Decoradores
+  // @SetMetadata('roles', ['admin', 'super-user']) // Se reemplazó por customDecorator RoleProtected
+  @RoleProtected(ValidRoles.superUser, ValidRoles.admin)
   @UseGuards(AuthGuard(), UserRoleGuard)
-  // Nombre de la función a continuación:
+  // Nombre del metodo:
   privateRoute2(@GetUser() user: User) {
     return {
       ok: true,
