@@ -18,18 +18,24 @@ import { IncomingHttpHeaders } from 'http';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // Decoradores
   @Post('register')
+  // Nombre de la función a continuación:
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 
+  // Decoradores
   @Post('login')
+  // Nombre de la función a continuación:
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
 
+  // Decoradores
   @Get('private')
   @UseGuards(AuthGuard())
+  // Nombre de la función a continuación:
   testingPrivateRoute(
     @GetUser() user: User,
     @GetUser('email') userEmail: string,
@@ -44,6 +50,17 @@ export class AuthController {
       userEmail,
       rawHeaders,
       headers,
+    };
+  }
+
+  // Decoradores
+  @Get('private2')
+  @UseGuards(AuthGuard())
+  // Nombre de la función a continuación:
+  privateRoute2(@GetUser() user: User) {
+    return {
+      ok: true,
+      user,
     };
   }
 }
