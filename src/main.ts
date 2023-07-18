@@ -24,7 +24,7 @@ async function bootstrap() {
     .setTitle('Teslo RESTFul API Elis')
     .setDescription('Teslo Shop endpoints')
     .setVersion('1.0')
-    // .addTag('cats') // todo: Los tags se harán en otro lugar
+    // .addTag('tagName') // Los tags se agregaron en cada controller con @ApiTags('tagName')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
