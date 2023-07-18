@@ -53,6 +53,7 @@ export class Product {
     // Tipo de relación
     () => User, // Con quien se relaciona
     (user) => user.product, // en qué campo
+    { eager: true }, // Carga automatica la relación del user (la info del usuario)
   )
   user: User;
 
