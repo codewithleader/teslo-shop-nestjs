@@ -15,35 +15,65 @@ import { User } from 'src/auth/entities/user.entity';
 
 @Entity({ name: 'products' }) // con "name" Renombra columna de tabla en PostgreSQL
 export class Product {
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: '1962b1e4-2f56-48ce-baf4-34974904e556',
+    description: 'Product ID',
+    uniqueItems: true,
+  }) // Documentation with Swagger
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: "Men's Solar Roof Tee",
+    description: 'Product title',
+    uniqueItems: true,
+  }) // Documentation with Swagger
   @Column('text', { unique: true })
   title: string;
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: 0,
+    description: 'Product price',
+  }) // Documentation with Swagger
   @Column('float', { default: 0 }) // "number" no es soportado por PostgreSQL. Decimales: "float"
   price: number;
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example:
+      "Inspired by our fully integrated home solar and storage system, the Tesla Solar Roof Tee advocates for clean, sustainable energy wherever you go. Designed for fit, comfort and style, the tee features an aerial view of our seamless Solar Roof design on the front with our signature T logo above 'Solar Roof' on the back. Made from 100% Peruvian cotton.",
+    description: 'Product description',
+    default: null,
+  }) // Documentation with Swagger
   @Column({ type: 'text', nullable: true }) // Otra sintaxis válida
   description: string;
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: 'men_solar_roof_tee',
+    description: 'Product SLUG - For SEO',
+    uniqueItems: true,
+  }) // Documentation with Swagger
   @Column('text', { unique: true })
   slug: string;
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: 10,
+    description: 'Product stock',
+    default: 0,
+  }) // Documentation with Swagger
   @Column('int', { default: 0 })
   stock: number;
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: ['S', 'M', 'L', 'XL'],
+    description: 'Product sizes',
+  }) // Documentation with Swagger
   @Column('text', { array: true })
   sizes: string[];
 
-  @ApiProperty() // Documentation with Swagger
+  @ApiProperty({
+    example: 'Men',
+    description: 'Product gender',
+  }) // Documentation with Swagger
   @Column('text')
   gender: string;
 
