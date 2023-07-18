@@ -3,11 +3,13 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 // Entities (models)
 import { ProductImage } from './';
+import { User } from 'src/auth/entities/user.entity';
 
 @Entity({ name: 'products' }) // con "name" Renombra columna de tabla en PostgreSQL
 export class Product {
@@ -46,6 +48,13 @@ export class Product {
     eager: true,
   })
   images?: ProductImage[];
+
+  @ManyToOne(
+    // Tipo de relación
+    () => User, // Con quien se relaciona
+    (user) => user.product, // en qué campo
+  )
+  user: User;
 
   @BeforeInsert()
   checkSlugInsert() {
