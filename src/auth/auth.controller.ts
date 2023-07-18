@@ -39,6 +39,19 @@ export class AuthController {
   }
 
   // Ruta
+  @Get('check-status')
+  // Otros Decoradores
+  @Auth()
+  checkAuthStatus(
+    //
+    @GetUser() user: User,
+  ) {
+    // todo:
+
+    return this.authService.checkAuthStatus(user);
+  }
+
+  // Ruta
   @Get('private')
   // Otros Decoradores
   @UseGuards(AuthGuard())
