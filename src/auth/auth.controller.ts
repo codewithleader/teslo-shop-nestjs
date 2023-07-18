@@ -8,16 +8,27 @@ import {
   // SetMetadata, // Se reemplazó por customDecorator RoleProtected
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+//
+import { IncomingHttpHeaders } from 'http';
 //
 import { User } from './entities/user.entity';
+//
 import { CreateUserDto, LoginUserDto } from './dto';
-import { AuthService } from './auth.service';
+//
 import { Auth, GetUser, RawHeaders } from './decorators';
-import { IncomingHttpHeaders } from 'http';
-import { UserRoleGuard } from './guards/user-role/user-role.guard';
 import { RoleProtected } from './decorators/role-protected.decorator';
+//
+import { UserRoleGuard } from './guards/user-role/user-role.guard';
+//
+import { AuthService } from './auth.service';
+//
 import { ValidRoles } from './interfaces';
+import { DOC_TAGS } from 'src/dictionary';
 
+// ...............................
+
+@ApiTags(DOC_TAGS.auth)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

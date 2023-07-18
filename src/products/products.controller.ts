@@ -9,14 +9,26 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
-import { ProductsService } from './products.service';
+import { ApiTags } from '@nestjs/swagger';
+//
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+//
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
+//
 import { Auth, GetUser } from 'src/auth/decorators';
-import { ValidRoles } from 'src/auth/interfaces';
+//
 import { User } from 'src/auth/entities/user.entity';
+//
+import { ProductsService } from './products.service';
+//
+import { ValidRoles } from 'src/auth/interfaces';
+//
+import { DOC_TAGS } from 'src/dictionary';
 
+// ...............................
+
+@ApiTags(DOC_TAGS.products)
 @Controller('products')
 // @Auth() // Al definirlo aquí logramos aplicar el Auth() a todos los endpoints
 export class ProductsController {

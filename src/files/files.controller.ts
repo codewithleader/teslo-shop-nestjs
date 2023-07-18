@@ -13,12 +13,19 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
+//
+import { diskStorage } from 'multer';
 // Services
 import { FilesService } from './files.service';
-import { diskStorage } from 'multer';
 // helpers
 import { fileFilter, fileNamer } from './helpers';
+//
+import { DOC_TAGS } from 'src/dictionary';
 
+// ........................
+
+@ApiTags(DOC_TAGS.files)
 @Controller('files') // Acá se le da el nombre al endpoint (http://localhost/api/files)
 export class FilesController {
   constructor(
