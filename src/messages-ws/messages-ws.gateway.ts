@@ -8,7 +8,7 @@ import { Socket } from 'socket.io';
 
 // Un "Gateway" en Websockets es el equivalente al "controller" en un RESTFUL API
 
-@WebSocketGateway({
+@WebSocketGateway(3000, {
   cors: true,
   // namespace: '/', // Si no se especifica apunta al root de la app
 })
