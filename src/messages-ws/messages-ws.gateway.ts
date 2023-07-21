@@ -82,7 +82,7 @@ export class MessagesWsGateway
 
     //? Emitir a todos incluyendo al client que envio el mensaje:
     this.wss.emit('message-from-server', {
-      fullName: 'Soy Yo!',
+      fullName: client.id.charAt(0).toUpperCase(),
       message: payload.message || 'Ningún mensaje enviado',
     });
   }
