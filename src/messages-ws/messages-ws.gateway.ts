@@ -8,6 +8,8 @@ import {
 import { MessagesWsService } from './messages-ws.service';
 import { Server, Socket } from 'socket.io';
 import { NewMessageDto } from './dto/new-message.dto';
+import { JwtService } from '@nestjs/jwt';
+import { IJwtPayload } from 'src/auth/interfaces';
 
 // Un "Gateway" en Websockets es el equivalente al "controller" en un RESTFUL API
 
@@ -20,10 +22,13 @@ export class MessagesWsGateway
 {
   @WebSocketServer() wss: Server; // Tiene toda la info de los clientes conectados
 
-  constructor(private readonly messagesWsService: MessagesWsService) {}
+  constructor(
+    private readonly messagesWsService: MessagesWsService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   //
-  handleConnection(client: Socket) {
+  async handleConnection(client: Socket) {
     // !Notas importantes:
     // client.join('chat'); // unir al cliente en la sala "chat"
     // this.wss
@@ -33,7 +38,20 @@ export class MessagesWsGateway
     // client.join(user.email); // Unir al cliente por un identificador unico como su email
 
     // console.log('cliente conectado:', client.id);
-    this.messagesWsService.registerClient(client);
+
+    // Obtener token de extraheaders:
+    const token = client.handshake.headers.authentication as string;
+    // console.log({ token });
+    let payload: IJwtPayload;
+    try {
+      payload = this.jwtService.verify(token);
+      await this.messagesWsService.registerClient(client, payload.id);
+    } catch (error) {
+      client.disconnect();
+      return;
+    }
+
+    // console.log({ payload });
 
     // console.log(
     //   'Clientes conectados: ',
@@ -82,7 +100,8 @@ export class MessagesWsGateway
 
     //? Emitir a todos incluyendo al client que envio el mensaje:
     this.wss.emit('message-from-server', {
-      fullName: client.id.charAt(0).toUpperCase(),
+      // fullName: client.id.charAt(0).toUpperCase(),
+      fullName: this.messagesWsService.getUserFullNameBy(client.id),
       message: payload.message || 'Ningún mensaje enviado',
     });
   }
