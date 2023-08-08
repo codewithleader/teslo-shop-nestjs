@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Product } from 'src/products/entities';
 import {
   BeforeInsert,
@@ -10,28 +11,29 @@ import {
 
 @Entity('users') // Aquí indicamos el nombre de la tabla en PostgreSQL
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty()
   @Column('text', { unique: true })
   email: string;
 
+  @ApiProperty()
   @Column('text', { select: false })
   password: string;
 
+  @ApiProperty()
   @Column('text')
   fullName: string;
 
+  @ApiProperty()
   @Column('bool', { default: true })
   isActive: boolean;
 
+  @ApiProperty()
   @Column('text', { array: true, default: ['user'] })
   roles: string[];
-
-  @BeforeInsert()
-  checkFieldsBeforeInsert() {
-    this.email = this.email.toLowerCase().trim();
-  }
 
   @OneToMany(
     // Tipo de relación
@@ -39,6 +41,11 @@ export class User {
     (product) => product.user, // en qué campo
   )
   product: Product;
+
+  @BeforeInsert()
+  checkFieldsBeforeInsert() {
+    this.email = this.email.toLowerCase().trim();
+  }
 
   @BeforeUpdate()
   checkFieldsBeforeUpdate() {

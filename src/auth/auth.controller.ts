@@ -8,7 +8,7 @@ import {
   // SetMetadata, // Se reemplazó por customDecorator RoleProtected
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 //
 import { IncomingHttpHeaders } from 'http';
 //
@@ -44,6 +44,13 @@ export class AuthController {
   // Ruta
   @Post('login')
   // Otros Decoradores
+  @ApiResponse({
+    status: 201,
+    description: 'Authenticated User',
+    type: User,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related' })
   // Nombre del metodo:
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);

@@ -91,6 +91,7 @@ export class Product {
   })
   images?: ProductImage[];
 
+  // todo: Realizar documentacion !!!
   @ManyToOne(
     // Tipo de relación
     () => User, // Con quien se relaciona
