@@ -2,7 +2,7 @@
 import { join } from 'path';
 // NestJS
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config'; // Configuración de variables de entorno
 import { TypeOrmModule } from '@nestjs/typeorm';
 // Modules
 import { ProductsModule } from './products/products.module';
@@ -17,7 +17,7 @@ import { MessagesWsModule } from './messages-ws/messages-ws.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot(), // Configuración de variables de entorno
     TypeOrmModule.forRoot({
       ssl: process.env.STAGE === 'prod',
       extra: {

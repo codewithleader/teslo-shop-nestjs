@@ -20,7 +20,7 @@ export class User {
   email: string;
 
   @ApiProperty()
-  @Column('text', { select: false })
+  @Column('text', { select: false }) // Select es para no traer este dato en una consulta ya que es mala practica mostrar la contraseña
   password: string;
 
   @ApiProperty()
