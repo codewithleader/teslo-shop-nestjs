@@ -10,7 +10,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   },
   "scripts": {
     "build": "nest build",
