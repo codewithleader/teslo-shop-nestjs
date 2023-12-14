@@ -26,6 +26,7 @@ export class SeedService {
 
     // Then: Create many products
     await this.insertNewProducts(adminUser);
+
     return 'Seed Execute';
   }
 

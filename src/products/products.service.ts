@@ -97,7 +97,7 @@ export class ProductsService {
     return product;
   }
 
-  // Metodo para aplanar las images para no enviar toda la info sinó solo la url
+  // Metodo para aplanar las images para no enviar toda la info sinó solo la url: ['http://image1', 'http://image2']
   async findOnePlain(term: string) {
     const { images = [], ...rest } = await this.findOne(term);
 
@@ -154,6 +154,7 @@ export class ProductsService {
   }
 
   async remove(id: string) {
+    // Este this.findOne() es el metodo que está en esta misma clase mas arriba (NO es de TypeOrm sino mio)
     const product = await this.findOne(id);
 
     // No hay que comprobar si existe porque ya el método findOne ya lanza una exception si no existe
