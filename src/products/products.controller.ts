@@ -53,13 +53,12 @@ export class ProductsController {
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    // console.log(paginationDto);
     return this.productsService.findAll(paginationDto);
   }
 
   @Get(':term') // "term": Termino de búsqueda
   findOne(@Param('term') term: string) {
-    return this.productsService.findOnePlain(term);
+    return this.productsService.findOnePlain(term); // Metodo para aplanar las images para no enviar toda la info sinó solo la url: ['http://image1', 'http://image2']
   }
 
   @Patch(':id')

@@ -11,7 +11,7 @@ export class PaginationDto {
   }) // Documentation with Swagger
   @IsOptional()
   @IsPositive()
-  // Transformar la data
+  // Transformar la data a number porque viene en string
   @Type(() => Number) // enableImplicitCorversions: true
   limit?: number;
 
@@ -21,6 +21,7 @@ export class PaginationDto {
   }) // Documentation with Swagger
   @IsOptional()
   @Min(0)
+  // Transformar la data a number porque viene en string
   @Type(() => Number) // enableImplicitCorversions: true
   offset?: number;
 }
